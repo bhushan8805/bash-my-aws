@@ -28,13 +28,35 @@ lambda-functions() {
         FunctionName,
         LastModified,
         Runtime,
-        MemorySize
+        MemorySize,
+        VpcConfig.VpcId
       ]"                |
   grep -E -- "$filters" |
   LC_ALL=C sort -b -k 2 |
   $column_command
 }
 
+lambda-get-function() {
+
+  local function_names=$(skim-stdin "$@")
+  [[ -z "$function_names" ]] && __bma_usage "function [function]" && return 1
+
+  local column_command
+  if column --help 2>/dev/null | grep -- --table-right > /dev/null; then
+    column_command='column --table --table-right 2'
+  else
+    column_command='column -t'
+  fi
+
+  local function_name
+  for function_name in $function_names; do
+    aws lambda get-function-configuration                              \
+      --function-name "$function_name"                   \
+      --output text                                      \
+      --query '[FunctionName, Runtime, Role, VpcConfig.VpcId]'
+  done |
+  $column_command
+}
 
 
 lambda-function-memory(){
