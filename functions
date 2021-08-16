@@ -107,6 +107,7 @@ kms-key-details
 kms-key-disable
 kms-key-enable
 kms-keys
+lambda-get-function
 lambda-function-memory
 lambda-function-memory-set
 lambda-function-memory-step
