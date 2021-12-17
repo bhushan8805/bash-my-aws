@@ -192,7 +192,8 @@ instance-iam-profile() {
       Reservations[].Instances[][
         [
           InstanceId,
-          IamInstanceProfile.Id
+          IamInstanceProfile.Id,
+          IamInstanceProfile.Arn
         ]
       ][]"          |
   column -s$'\t' -t
