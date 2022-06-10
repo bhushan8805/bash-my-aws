@@ -63,11 +63,18 @@ stacks() {
       CREATE_IN_PROGRESS                              \
       DELETE_FAILED                                   \
       DELETE_IN_PROGRESS                              \
+      IMPORT_IN_PROGRESS                              \
+      IMPORT_COMPLETE                                 \
+      IMPORT_ROLLBACK_IN_PROGRESS                     \
+      IMPORT_ROLLBACK_FAILED                          \
+      IMPORT_ROLLBACK_COMPLETE                        \
+      REVIEW_IN_PROGRESS                              \
       ROLLBACK_COMPLETE                               \
       ROLLBACK_FAILED                                 \
       ROLLBACK_IN_PROGRESS                            \
       UPDATE_COMPLETE                                 \
       UPDATE_COMPLETE_CLEANUP_IN_PROGRESS             \
+      UPDATE_FAILED                                   \
       UPDATE_IN_PROGRESS                              \
       UPDATE_ROLLBACK_COMPLETE                        \
       UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS    \
@@ -833,8 +840,10 @@ _bma_stack_diff_template() {
   if ! aws cloudformation describe-stacks --stack-name "$stack" 1>/dev/null; then
     return 1;
   fi
-  if [ "x$( type -P colordiff )" != "x" ]; then
+  if command -v colordiff; then
     local DIFF_CMD=colordiff
+  elif command -v icdiff; then
+    local DIFF_CMD=icdiff
   else
     local DIFF_CMD=diff
   fi
@@ -869,8 +878,10 @@ _bma_stack_diff_params() {
   if [ ! -f "$params" ]; then
     return 1
   fi
-  if [ "x$( type -P colordiff )" != "x" ]; then
+  if command -v colordiff; then
     local DIFF_CMD=colordiff
+  elif command -v icdiff; then
+    local DIFF_CMD=icdiff
   else
     local DIFF_CMD=diff
   fi

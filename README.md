@@ -148,26 +148,31 @@ postgres02  DELETE_COMPLETE  2011-05-23T15:47:44Z  NEVER_UPDATED  NOT_NESTED
 * [bash](https://www.gnu.org/software/bash/)
 * [jq-1.4](http://stedolan.github.io/jq/download/) or later (for stack-diff)
 
+### Optional Packages
+
+* [colordiff](https://www.colordiff.org/) to show stack-diff in color
+* [icdiff](https://github.com/jeffkaufman/icdiff) to show stack-diff in color and side-by-side
+
 ### Installation
 
 As shown below, you may simply clone the GitHub repo and source the files required.
 (You should probably fork it instead to keep your customisations)
 
 ```Shell
-$ git clone https://github.com/bash-my-aws/bash-my-aws.git ~/.bash-my-aws
+$ git clone https://github.com/bash-my-aws/bash-my-aws.git ${BMA_HOME:-$HOME/.bash-my-aws}
 ```
 
 Put the following in your shell's startup file:
 
 ```Shell
-export PATH="$PATH:$HOME/.bash-my-aws/bin"
-source ~/.bash-my-aws/aliases
+export PATH="$PATH:${BMA_HOME:-$HOME/.bash-my-aws}/bin"
+source ${BMA_HOME:-$HOME/.bash-my-aws}/aliases
 
 # For ZSH users, uncomment the following two lines:
 # autoload -U +X compinit && compinit
 # autoload -U +X bashcompinit && bashcompinit
 
-source ~/.bash-my-aws/bash_completion.sh
+source ${BMA_HOME:-$HOME/.bash-my-aws}/bash_completion.sh
 ```
 
 #### Why use shell aliases?
